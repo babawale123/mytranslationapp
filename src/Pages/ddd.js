@@ -116,7 +116,7 @@ const Registration = () => {
       }
     
       return (
-        <Container>
+        <div className='container'>
             <form onSubmit={handleSubmit}>
                     <h3>Source Language</h3>
                     <select onChange={(e)=>setSource(e.target.value)} value={source}>
@@ -158,7 +158,7 @@ const Registration = () => {
                                 <p>Loading or No Data</p>
                                 )}</p>
             </form>
-      </Container>
+      </div>
       );
 }
 
