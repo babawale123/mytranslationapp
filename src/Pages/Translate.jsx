@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components'
 import Sidebar from '../Component/Sidebar';
+import { translateAction } from '../action/translateAction'
 
 const AppContainer = styled.div`
     position: relative;
@@ -90,6 +91,7 @@ const Button = styled.button`
     background-color:teal;
     border-radius:15px;
     color:white;
+    cursor:pointer;
 `
 
 const InputFormContainer = styled.div`
@@ -110,7 +112,7 @@ const OutPutFormContainer = styled.div`
 `
 
 const Translate = () => {
-    const [languag, setLanguages] = useState([])
+    const [languages, setLanguages] = useState([])
     const [source, setSource] = useState("")
     const [target, setTarget] = useState("")
     const [text, setWord] = useState("")
@@ -147,36 +149,43 @@ const Translate = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(source,target)
+        dispatch(translateAction(source,target,text))
     }
   return (
     <AppContainer>
         <Sidebar />
             <TranslateContainer>
                 <InputFormContainer>
-                    <TranslateForm>
+                    <TranslateForm onSubmit={handleSubmit}>
                         <FormLabel>Select Source Country</FormLabel>
-                        <SelectContainer>
-                            <Option>select country</Option>
-                            <Option>select country</Option>
-                            <Option>select country</Option>
+                        <SelectContainer onChange={(e)=>setSource(e.target.value)} value={source}>
+                          <Option>select country</Option>
+                          {Array.isArray(languages.languages) ? languages.languages.map((language,index)=>(
+                            <Option key={index} value={language.code}>{language.name}</Option>
+                          )):null}
                         </SelectContainer>
 
                         <FormLabel>Select Target Country</FormLabel>
-                        <SelectContainer>
-                            <Option>select country</Option>
-                            <Option>select country</Option>
-                            <Option>select country</Option>
+                        <SelectContainer onChange={(e)=>setTarget(e.target.value)} value={target}>
+                          <Option>select country</Option>
+                          {Array.isArray(languages.languages) ? languages.languages.map((language,index)=>(
+                            <Option key={index} value={language.code}>{language.name}</Option>
+                          )):null}
                         </SelectContainer>
 
-                        <TextAreaContainer rows={6} cols={6}>
+                        <TextAreaContainer onChange={(e)=>setWord(e.target.value)} rows={6} cols={6}>
                         </TextAreaContainer>
 
-                        <Button>Translate</Button>
+                        <Button>{loading ?'Translating.....':"Translate"}</Button>
                     </TranslateForm>
                 </InputFormContainer>
 
                 <OutPutFormContainer>
-
+                            {error && <p style={{color:"red"}}>{error}</p>}
+                      {Array.isArray(texts) ? texts.map((word,index)=>(
+                        <p key={index}>{word.translatedText}</p>
+                      )):null}
                 </OutPutFormContainer>
             
             </TranslateContainer>

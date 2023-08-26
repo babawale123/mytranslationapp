@@ -1,6 +1,6 @@
 import { ADD_TRANSLATE_FALIED, ADD_TRANSLATE_REQUEST, ADD_TRANSLATE_SUCCESS } from "../constant/translateConstant";
 
-export const translateReducer = (state={text:[]},action) => {
+export const translateReducer = (state={texts:[]},action) => {
     switch (action.type) {
         case ADD_TRANSLATE_REQUEST:
             return {loading:true}
